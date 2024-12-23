@@ -1,0 +1,111 @@
+let shop = document.getElementById('shop');
+
+// Shop items data
+let shopItemsData = [
+    {
+        id: "fhfhkhkdjhs",
+        name: "Polo T-shirt",
+        price: 425,
+        description: "Men solid black polo t-shirt",
+        image: "images/img1.jpg",
+    },
+
+    {
+        id: "hifhiskgk",
+        name: "Hoodie shirt",
+        price: 678,
+        description: "Men solid black polo t-shirt",
+        image: "images/img2.jpg",
+    },
+
+    {
+        id: "hisehgfihihk",
+        name: "Hoodie",
+        price: 876,
+        description: "Men solid black polo t-shirt",
+        image: "images/img3.jpg",
+    },
+
+    {
+        id: "hfhodsof",
+        name: "Shirt",
+        price: 655,
+        description: "Men solid black polo t-shirt",
+        image: "images/img4.jpg",
+    },
+
+];
+
+let basket = []; // Array to store the selected items
+
+// Function to generate the shop items
+let generateShop = () => {
+    return (shop.innerHTML = shopItemsData.map((items) => {
+        let { id, name, price, description, image } = items;
+        return `
+    <div id=product-id-${id} class="item">
+            <img width="220" src=${image} alt="image">
+            <div class="details">
+                <h3>${name}</h3>
+                <p>${description}</p>
+                <div class="price-quantity">
+                    <h2>${price}</h2>
+                    <div class="button">
+                        <i onclick="decrement(${id})" class="bi bi-dash"></i>
+                        <div id=${id} class="quantity">0</div>
+                        <i onclick="increment(${id})" class="bi bi-plus"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    }).join("")); // join() method is used to join the array elements into a string
+};
+
+generateShop(); // calling the function
+
+// Function to increment the quantity
+let increment = (id) => {
+    let selectedItem = id;
+    let search = basket.find((item) => item.id === selectedItem.id);
+
+    if (search === undefined) {
+        basket.push({
+            id: selectedItem.id,
+            item: 1,
+        });
+    } else {
+        search.item += 1;
+    }
+    // console.log(basket);
+    update(selectedItem.id);
+};
+
+// Function to decrement the quantity
+let decrement = (id) => {
+    let selectedItem = id;
+    let search = basket.find((item) => item.id === selectedItem.id);
+
+    if (search.item === 0) return;
+    else {
+        search.item -= 1;
+    }
+    // console.log(basket);
+    update(selectedItem.id);
+};
+
+// Function to update the quantity
+let update = (id) => {
+    let search = basket.find((item) => item.id === id);    // Searching the item
+    console.log(search.item); // Quantity
+    document.getElementById(id).innerHTML = search.item; // Updating the quantity
+    calculateTotal();
+};
+
+// Function to calculate the total
+let calculateTotal = () => {
+    let cartIcon = document.getElementById('cartAmount');
+    cartIcon.innerHTML = basket.reduce((acc, item) => {
+        return acc + item.item;
+    }, 0);
+}
