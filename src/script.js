@@ -36,12 +36,13 @@ let shopItemsData = [
 
 ];
 
-let basket = []; // Array to store the selected items
+let basket = JSON.parse(localStorage.getItem("data")) || [];  // Array to store the selected items
 
 // Function to generate the shop items
 let generateShop = () => {
     return (shop.innerHTML = shopItemsData.map((items) => {
         let { id, name, price, description, image } = items;
+        let search = basket.find((item) => item.id === id) || [];
         return `
     <div id=product-id-${id} class="item">
             <img width="220" src=${image} alt="image">
@@ -52,7 +53,9 @@ let generateShop = () => {
                     <h2>${price}</h2>
                     <div class="button">
                         <i onclick="decrement(${id})" class="bi bi-dash"></i>
-                        <div id=${id} class="quantity">0</div>
+                        <div id=${id} class="quantity">
+                        ${search.item === undefined ? 0 : search.item}
+                        </div>
                         <i onclick="increment(${id})" class="bi bi-plus"></i>
                     </div>
                 </div>
@@ -77,6 +80,7 @@ let increment = (id) => {
     } else {
         search.item += 1;
     }
+    localStorage.setItem('data', JSON.stringify(basket));
     // console.log(basket);
     update(selectedItem.id);
 };
@@ -86,12 +90,16 @@ let decrement = (id) => {
     let selectedItem = id;
     let search = basket.find((item) => item.id === selectedItem.id);
 
-    if (search.item === 0) return;
+    if (search === undefined) return;
+    else if (search.item === 0) return;
     else {
         search.item -= 1;
     }
-    // console.log(basket);
     update(selectedItem.id);
+    basket = basket.filter((item) => item.item !== 0);
+    // console.log(basket);
+    
+    localStorage.setItem('data', JSON.stringify(basket));
 };
 
 // Function to update the quantity
@@ -108,4 +116,6 @@ let calculateTotal = () => {
     cartIcon.innerHTML = basket.reduce((acc, item) => {
         return acc + item.item;
     }, 0);
-}
+};
+
+calculateTotal(); // calling the function
