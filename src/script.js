@@ -1,40 +1,7 @@
 let shop = document.getElementById('shop');
 
 // Shop items data
-let shopItemsData = [
-    {
-        id: "fhfhkhkdjhs",
-        name: "Polo T-shirt",
-        price: 425,
-        description: "Men solid black polo t-shirt",
-        image: "images/img1.jpg",
-    },
 
-    {
-        id: "hifhiskgk",
-        name: "Hoodie shirt",
-        price: 678,
-        description: "Men solid black polo t-shirt",
-        image: "images/img2.jpg",
-    },
-
-    {
-        id: "hisehgfihihk",
-        name: "Hoodie",
-        price: 876,
-        description: "Men solid black polo t-shirt",
-        image: "images/img3.jpg",
-    },
-
-    {
-        id: "hfhodsof",
-        name: "Shirt",
-        price: 655,
-        description: "Men solid black polo t-shirt",
-        image: "images/img4.jpg",
-    },
-
-];
 
 let basket = JSON.parse(localStorage.getItem("data")) || [];  // Array to store the selected items
 
@@ -50,7 +17,7 @@ let generateShop = () => {
                 <h3>${name}</h3>
                 <p>${description}</p>
                 <div class="price-quantity">
-                    <h2>${price}</h2>
+                    <h2>₹${price}</h2>
                     <div class="button">
                         <i onclick="decrement(${id})" class="bi bi-dash"></i>
                         <div id=${id} class="quantity">
